@@ -1,0 +1,47 @@
+---
+- name: Install webserver
+  hosts: ec2
+  vars:
+    apache_package: "httpd"
+    apache_service: "httpd"
+    php_files:
+      - index.php
+      - phpinfo.php
+
+  tasks:
+    - name: Install packages
+      package: name={{ item }} state=installed
+      with_items:
+        - httpd
+        - php
+      tags: install
+
+    - name: Set Apache config
+      template:
+        src: ../templates/vhost.conf.j2
+        dest: /etc/httpd/conf.d/vhost.conf
+        validate: /usr/sbin/httpd -t -f %s
+      notify: Restart Apache
+      tags: config
+
+    - name: Set php files
+      template:
+        src: "../templates/{{ item }}.j2"
+        dest: "/var/www/html/{{ item }}"
+        owner: apache
+        group: apache
+      with_items: "{{ php_files }}"
+      tags: php
+
+    - name: Enable and start Apache service
+      service:
+        name: "{{ apache_service }}"
+        enabled: yes
+        state: started
+      tags: start
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: "{{ apache_service }}"
+        state: restarted

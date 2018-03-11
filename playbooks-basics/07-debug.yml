@@ -1,0 +1,24 @@
+---
+- name: Install webserver
+  hosts: ec2
+  vars:
+    php_files:
+      - index.php
+      - phpinfo.php
+      - who.php
+
+  tasks:
+    - name: Show some text
+      debug: msg="Some text"
+
+    - name: Show ansbible hostname
+      debug: msg={{ ansible_hostname }}
+
+    - name: Show ansbible hostname variable
+      debug: var=ansible_hostname
+
+    - name: Show inventory hostname variable
+      debug: var=inventory_hostname verbosity=1
+
+    - name: Show ansible_processor variable
+      debug: var=ansible_processor verbosity=2

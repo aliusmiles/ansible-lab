@@ -1,0 +1,29 @@
+---
+- name: Install webserver
+  hosts: ec2
+  vars:
+    php_files:
+      - index.php
+      - phpinfo.php
+      - who.php
+
+  tasks:
+    - name: Get who string
+      shell:
+        who
+      register: who
+      tags: who
+
+    - name: Set who_string variable
+      set_fact:
+        who_string: "{{ who.stdout }}"
+      tags: who
+
+    - name: Set php files
+      template:
+        src: "../templates/{{ item }}.j2"
+        dest: "/var/www/html/{{ item }}"
+        owner: apache
+        group: apache
+      with_items: "{{ php_files }}"
+      tags: php

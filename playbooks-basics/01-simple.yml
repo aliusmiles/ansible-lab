@@ -1,0 +1,12 @@
+---
+- name: Install webserver
+  hosts: ec2
+  tasks:
+    - name: Install Apache
+      package: name=httpd state=installed
+
+    - name: Enable and start Apache service
+      service:
+        name: httpd
+        enabled: yes
+        state: started

@@ -1,0 +1,37 @@
+---
+- name: Install webserver
+  hosts: ec2
+  vars:
+    apache_package: "httpd"
+    apache_service: "httpd"
+    hello_string: "Hi"
+
+  tasks:
+    - name: Install Apache
+      package: name={{ apache_package }} state=installed
+
+    - name: Set Apache config
+      template:
+        src: ../templates/vhost.conf.j2
+        dest: /etc/httpd/conf.d/vhost.conf
+        validate: /usr/sbin/httpd -t -f %s
+      notify: Restart Apache
+
+    - name: Set index.html
+      template:
+        src: ../templates/index.html.j2
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+
+    - name: Enable and start Apache service
+      service:
+        name: "{{ apache_service }}"
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: "{{ apache_service }}"
+        state: restarted

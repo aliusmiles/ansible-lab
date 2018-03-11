@@ -1,0 +1,10 @@
+---
+- name: Cleanup instance
+  hosts: ec2
+  vars:
+    cleanup: false
+
+  tasks:
+    - name: Cleanup index.html
+      file: path=/var/www/html/index.html state=absent
+      when: cleanup

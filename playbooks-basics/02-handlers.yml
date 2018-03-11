@@ -1,0 +1,34 @@
+---
+- name: Install webserver
+  hosts: ec2
+  tasks:
+    - name: Install Apache
+      package:
+        name: httpd
+        state: installed
+
+    - name: Set Apache config
+      copy:
+        src: ../files/vhost.conf
+        dest: /etc/httpd/conf.d/vhost.conf
+      notify: Restart Apache
+
+    - name: Set index.html
+      copy:
+        src: ../files/index.html
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+      notify: Restart Apache
+
+    - name: Enable and start Apache service
+      service:
+        name: httpd
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted

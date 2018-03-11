@@ -1,0 +1,20 @@
+---
+- name: Cleanup instance
+  hosts: ec2
+  tasks:
+    - name: Remove packages
+      package: name={{ item }} state=absent
+      with_items:
+        - httpd
+        - php
+        - nginx
+        - mysql
+
+    - name: Cleanup html dir
+      file: path=/var/www/html/{{ item }} state=absent
+      with_items:
+        - index.html
+        - index.php
+
+    - name: Cleanup apache config
+      file: path=/etc/httpd/conf.d/vhost.conf state=absent
