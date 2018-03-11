@@ -21,6 +21,8 @@
         group: apache
       notify: Restart Apache
 
+    # - meta: flush_handlers
+
     - name: Enable and start Apache service
       service:
         name: httpd
