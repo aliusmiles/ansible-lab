@@ -1,0 +1,5 @@
+<VirtualHost *:{{ apache_port }}>
+    # {{ comment_string | default("example") }}
+    DocumentRoot /var/www/html
+    ServerName {{ ansible_host }}
+</VirtualHost>

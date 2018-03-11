@@ -7,7 +7,7 @@
         name: httpd
         state: installed
 
-    - name: Set Apache config
+    - name: Set Apache virtual host
       copy:
         src: ../files/vhost.conf
         dest: /etc/httpd/conf.d/vhost.conf

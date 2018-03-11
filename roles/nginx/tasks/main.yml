@@ -1,0 +1,10 @@
+---
+# tasks file for nginx
+- name: Install nginx
+  package: name={{ nginx_package }} state=installed
+
+- name: Configure nginx
+  template:
+    src: proxy.conf.j2
+    dest: /etc/nginx/conf.d/proxy.conf
+  notify: Restart Nginx

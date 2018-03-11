@@ -1,0 +1,13 @@
+---
+- name: Install web servers
+  hosts: web
+  apache_port: 8080
+  roles:
+    - php
+    - apache
+    - webpage
+
+- name: Install proxy server
+  hosts: proxy
+  roles:
+    - nginx

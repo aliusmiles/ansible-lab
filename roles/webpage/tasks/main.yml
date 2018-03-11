@@ -1,0 +1,15 @@
+---
+# tasks file for webpage
+- name: Add index.php
+  template:
+    src: index.php.j2
+    dest: /var/www/html/index.php
+    owner: apache
+    group: apache
+
+- name: Add phpinfo.php
+  copy:
+    src: phpinfo.php
+    dest: /var/www/html/phpinfo.php
+    owner: apache
+    group: apache

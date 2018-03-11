@@ -1,0 +1,5 @@
+---
+# tasks file for php
+- name: Install php packages
+  package: name={{ item }} state=installed
+  with_items: "{{ php_packages }}"

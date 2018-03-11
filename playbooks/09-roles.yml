@@ -1,0 +1,15 @@
+---
+- name: Install webserver
+  hosts: ec2
+  roles:
+    - php
+    - role: apache
+      apache_port: 8080
+      tags: apache
+    - { role: webpage, tags: "web" }
+
+  tasks:
+    - name: Include role nginx
+      include_role:
+        name: nginx
+      tags: nginx

@@ -11,7 +11,7 @@
       package: name={{ apache_package }} state=installed
       tags: install
 
-    - name: Set Apache config
+    - name: Set Apache virtual host
       template:
         src: ../templates/vhost.conf.j2
         dest: /etc/httpd/conf.d/vhost.conf

@@ -1,0 +1,3 @@
+---
+# defaults file for webpage
+hello_string: "This variable was set in role defaults/main.yml"

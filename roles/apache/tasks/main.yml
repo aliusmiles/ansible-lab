@@ -1,0 +1,23 @@
+---
+# tasks file for apache
+- name: Install Apache
+  package: name={{ apache_package }} state=installed
+
+- name: Set Apache port
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: "^Listen .*$"
+    line: "Listen {{ apache_port }}"
+
+- name: Set Apache virtual host
+  template:
+    src: vhost.conf.j2
+    dest: /etc/httpd/conf.d/vhost.conf
+    validate: /usr/sbin/httpd -t -f %s
+  notify: Restart Apache
+
+- name: Enable and start Apache service
+  service:
+    name: "{{ apache_service }}"
+    enabled: yes
+    state: started
